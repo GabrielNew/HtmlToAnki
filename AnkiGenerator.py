@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from random import randint
 
 def ReadFileHTML():
-  with open("PATH_YOUR_HTML", "r") as f:
+  with open("", "r", encoding="utf-8") as f:
     soup = BeautifulSoup(f, 'html.parser')
   return soup
 
