@@ -6,7 +6,7 @@ import os
 from time import sleep
 
 def ReadFileHTML():
-  with open("", "r", encoding="utf-8") as f:
+  with open("C:\\Users\\Teste\\OneDrive\\Documents\\Programação\\Python\\AnkiFlashcardGenerator\\HTML_FLASHCARD\\testeFlashcard2.html", "r", encoding="utf-8") as f:
     soup = BeautifulSoup(f, 'html.parser')
   return soup
 
@@ -51,34 +51,48 @@ def ExportApkgFile():
 #HTML_PATH = os.getenv('HTML_PATH')
 #print(HTML_PATH)
 
+total_questions = 0
 myDeck = CreateDeck()
 soup = ReadFileHTML()
 questionsAndAnswers = soup.find_all('ul', 'toggle')
 
-for x in questionsAndAnswers:
-  if(x.find('summary').find('code') != None):
-    questionAndAnswer = FormatClozeDeck(x)
+for toggle in questionsAndAnswers:
+  if(toggle.find('summary').find('code') != None):
+    questionAndAnswer = FormatClozeDeck(toggle)
     deckNote = CreateClozeDeckNote(questionAndAnswer)
     AddCardDeck(deckNote)
-  elif((x.find('ul') == None or x.find('ol') == None or x.find('li') == None) and x.find('p') != None):
-    question = x.find('summary').text
-    answer = ''
-    if(len(x.find_all('p')) > 1):
-      answers = x.find_all('p')
-      for ans in answers:
-        answer += ans.text + ' '
-    else:
-      answer = x.find('p').text
-    print(question, answer.strip())
-    deckNote = CreateBasicDeckNote(question, answer)
-    AddCardDeck(deckNote)
-  elif(x.find('ol') == None and x.find('ul') != None and x.find('li') != None):
-    question = x.find('summary').text
-    print(question)
+    total_questions += 1
   else:
-    print(x)
-    #print(x.find_all('p').text)
-    #print(x.select('summary > p'))
-    break
-
-#ExportApkgFile()
+    list_tags = []
+    i = 0
+    for test in toggle.find_all(True):
+      if(i > 1):
+        list_tags.append(test.name)
+      i += 1
+    list_tags = list(dict.fromkeys(list_tags))
+    list_tags.remove('summary')
+    if('strong' in list_tags):
+      list_tags.remove('strong')
+    if('p' in list_tags and (len(list_tags) == 1)):
+      # JUST P TAG
+      question = toggle.find('summary').text
+      answer = ''
+      if(len(toggle.find_all('p')) > 1):
+        answers = toggle.find_all('p')
+        for ans in answers:
+          answer += ans.text + ' '
+      else:
+        answer = toggle.find('p').text
+      deckNote = CreateBasicDeckNote(question, answer)
+      AddCardDeck(deckNote)
+    elif('li' in list_tags and (len(list_tags) == 1)):
+      print('JUST LI TAG')
+    elif('figure' in list_tags and (len(list_tags) == 1)):
+      print('JUST FIGURE TAG')
+    elif('ol' in list_tags and 'li' in list_tags and (len(list_tags) == 2)):
+      print('JUST OL AND LI TAGS')
+    elif('p' in list_tags and 'ul' in list_tags and 'li' in list_tags and (len(list_tags) == 3)):
+      print('JUST P AND UL AND LI TAGS')
+    list_tags.clear()
+    
+ExportApkgFile()
