@@ -5,14 +5,15 @@ import os
 import shutil
 
 IMAGES_PATH = r'C:\Users\Teste\OneDrive\Documents\Programação\Python\AnkiFlashcardGenerator\images'
+DESTINATION_PATH = r'C:\Users\Teste\OneDrive\Documents\Programação\Python\AnkiFlashcardGenerator'
 
 def ReadFileHTML():
-  with open("C:\\Users\\Teste\\OneDrive\\Documents\\Programação\\Python\\AnkiFlashcardGenerator\\HTML_FLASHCARD\\testeFlashcard2.html", "r", encoding="utf-8") as f:
+  with open("C:\\Users\\Teste\\OneDrive\\Documents\\Programação\\Python\\AnkiFlashcardGenerator\\HTML_FLASHCARD\\estavel.html", "r", encoding="utf-8") as f:
     soup = BeautifulSoup(f, 'html.parser')
   return soup
 
 def CreateDeck(deckName):
-  return genanki.Deck(deck_id = randint(1, 99999), name=deckName)
+  return genanki.Deck(deck_id = randint(1, 99999), name="teste")
   
 def CreateBasicDeckNote(question, answer):
   return genanki.Note(model=genanki.BASIC_MODEL, fields=[question, answer])
@@ -51,7 +52,6 @@ def ExportApkgFile(deckName):
   my_package.write_to_file(deckName+'.apkg')
 
 def list_files(dir_path):
-    # list to store files
     res = []
     try:
         for file_path in os.listdir(dir_path):
@@ -102,6 +102,6 @@ for toggle in questionsAndAnswers:
     deckNote = CreateBasicDeckNote(question, answer)
     AddCardDeck(deckNote)
 
-copied_files = copy_archives(r'C:\Users\Teste\OneDrive\Documents\Programação\Python\AnkiFlashcardGenerator\images', r'C:\Users\Teste\OneDrive\Documents\Programação\Python\AnkiFlashcardGenerator')
+copied_files = copy_archives(IMAGES_PATH, DESTINATION_PATH)
 ExportApkgFile(deckName.strip())
 delete_files(copied_files)
