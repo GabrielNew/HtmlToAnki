@@ -13,7 +13,7 @@ def ReadFileHTML():
   return soup
 
 def CreateDeck(deckName):
-  return genanki.Deck(deck_id = randint(1, 99999), name="teste")
+  return genanki.Deck(deck_id = randint(1, 99999), name=deckName)
   
 def CreateBasicDeckNote(question, answer):
   return genanki.Note(model=genanki.BASIC_MODEL, fields=[question, answer])
