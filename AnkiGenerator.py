@@ -6,9 +6,10 @@ import shutil
 
 IMAGES_PATH = r'C:\Users\Teste\OneDrive\Documents\Programação\Python\AnkiFlashcardGenerator\images'
 DESTINATION_PATH = r'C:\Users\Teste\OneDrive\Documents\Programação\Python\AnkiFlashcardGenerator'
+HTML_PATH = r'C:\Users\Teste\OneDrive\Documents\Programação\Python\AnkiFlashcardGenerator\HTML_FLASHCARD\estavel.html'
 
 def ReadFileHTML():
-  with open("C:\\Users\\Teste\\OneDrive\\Documents\\Programação\\Python\\AnkiFlashcardGenerator\\HTML_FLASHCARD\\estavel.html", "r", encoding="utf-8") as f:
+  with open(HTML_PATH, "r", encoding="utf-8") as f:
     soup = BeautifulSoup(f, 'html.parser')
   return soup
 
@@ -91,6 +92,9 @@ myDeck = CreateDeck(deckName)
 questionsAndAnswers = soup.find_all('ul', 'toggle')
 
 for toggle in questionsAndAnswers:
+  if(toggle.find('img') != None):
+     filename = str(os.path.basename(toggle.find('img')['src'])).replace('%20',' ')
+     toggle.find('img')['src'] = filename
   if(toggle.find('summary').find('code') != None):
     questionAndAnswer = FormatClozeDeck(toggle)
     deckNote = CreateClozeDeckNote(questionAndAnswer)
