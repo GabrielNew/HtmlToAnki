@@ -12,7 +12,7 @@ This script was build with [Python 3.12.2](https://docs.python.org/3/) and two l
 - [ ] Develop an API to make this public and easier to use.
 
 > [!TIP]
-You may use this script and make any changes. There is no need to install these libraries in your local machine, create a VENV to Python, it's very easy.  
+You may use this script and make any changes. There is no need to install these libraries in your local machine, create a VENV to Python.  
 
 > [!WARNING]
 This script is just an alpha version, so it has some limitations and may contains bugs.
